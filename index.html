@@ -8,37 +8,18 @@
     <script src="https://unpkg.com/mind-ar@1.1.4/dist/mindar-image-three.prod.js"></script>
   </head>
   <body>
-    <div id="container"></div>
+    <a-scene mindar-image="imageTargetSrc: assets\targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <img id="card" src="assets\afu.png" />
+        <a-asset-item id="avatarModel" src="assets\57.gif"></a-asset-item>
+      </a-assets>
 
-    <!-- 加入 GIF -->
-    <img id="gif" src="./assets/57.gif" style="display: none;" />
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
+        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.005 0.005 0.005" src="#avatarModel" animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate">
+      </a-entity>
+    </a-scene>
 
-    <script>
-      window.addEventListener("load", async () => {
-        const mindarThree = new window.MINDAR.IMAGE.MindARThree({
-          container: document.querySelector("#container"),
-          imageTargetSrc: "./assets/target.mind"
-        });
-
-        const { renderer, scene, camera } = mindarThree;
-
-        const gif = document.getElementById("gif");
-        const texture = new THREE.Texture(gif);
-        texture.needsUpdate = true; // 更新貼圖
-
-        const plane = new THREE.Mesh(
-          new THREE.PlaneGeometry(1, 0.5625),
-          new THREE.MeshBasicMaterial({ map: texture, transparent: true })
-        );
-
-        const anchor = mindarThree.addAnchor(0); // afu.png 是第 0 個圖
-        anchor.group.add(plane);
-
-        await mindarThree.start();
-        renderer.setAnimationLoop(() => {
-          renderer.render(scene, camera);
-        });
-      });
-    </script>
   </body>
 </html>
