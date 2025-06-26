@@ -24,6 +24,8 @@
 
         const video = document.getElementById("video0");
         const texture = new THREE.VideoTexture(video);
+        console.log("Video readyState:", video.readyState);
+
 
         const plane = new THREE.Mesh(
           new THREE.PlaneGeometry(1, 0.5625),
