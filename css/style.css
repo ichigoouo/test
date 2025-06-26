@@ -1,29 +1,10 @@
-/* 清除邊距，佔滿整個畫面 */
 body {
   margin: 0;
   overflow: hidden;
-  font-family: Arial, sans-serif;
   background-color: black;
 }
-
-/* MindAR 的容器 */
 #container {
   width: 100vw;
   height: 100vh;
   position: relative;
-}
-
-/* 原始影片不要顯示出來（影片會貼在 AR 物件上） */
-video {
-  display: none;
-}
-
-/* 可選：如果你有提示文字 */
-#loadingText {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: white;
-  font-size: 18px;
-  z-index: 999;
 }
