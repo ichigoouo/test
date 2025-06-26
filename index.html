@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <title>GIF AR</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-<script src="https://unpkg.com/three@0.136.0/build/three.min.js"></script>
-<script src="https://unpkg.com/mind-ar@1.1.4/dist/mindar-image-three.prod.js"></script>
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://unpkg.com/three@0.136.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/mind-ar@1.1.4/dist/mindar-image-three.prod.js"></script>
   </head>
   <body>
     <div id="container"></div>
 
-    <!-- 加入 GIF -->
-    <img id="gif" src="./assets/57.gif" style="display: none;" />
+    <video id="video0" src="./assets/57.webm" autoplay loop muted playsinline style="display:none;"></video>
 
     <script>
       window.addEventListener("load", async () => {
@@ -22,16 +22,15 @@
 
         const { renderer, scene, camera } = mindarThree;
 
-        const gif = document.getElementById("gif");
-        const texture = new THREE.Texture(gif);
-        texture.needsUpdate = true; // 更新貼圖
+        const video = document.getElementById("video0");
+        const texture = new THREE.VideoTexture(video);
 
         const plane = new THREE.Mesh(
           new THREE.PlaneGeometry(1, 0.5625),
           new THREE.MeshBasicMaterial({ map: texture, transparent: true })
         );
 
-        const anchor = mindarThree.addAnchor(0); // afu.png 是第 0 個圖
+        const anchor = mindarThree.addAnchor(0);
         anchor.group.add(plane);
 
         await mindarThree.start();
