@@ -9,17 +9,17 @@
       
       <!-- 預載影片 -->
       <a-assets>
-        <video id="myvideo" autoplay loop muted playsinline src="assets/57.webm"></video>
+        <video id="myvideo" autoplay loop muted playsinline src="assets/video0.webm"></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <!-- 追蹤目標後呈現影片 -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane position="0 0 0" height="0.5625" width="1" rotation="0 0 0"
-          material="shader: flat; src: #myvideo; transparent: true">
-        </a-plane>
-      </a-entity>
+<a-entity mindar-image-target="targetIndex: 0">
+  <a-plane position="0 0 0" width="0.5625" height="1" scale="1.5 1.5 1"
+    material="shader: flat; src: #myvideo; transparent: true">
+  </a-plane>
+</a-entity>
     </a-scene>
   </body>
 </html>
