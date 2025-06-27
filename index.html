@@ -9,9 +9,12 @@
       
       <!-- 預載影片 -->
 <a-assets>
-  <video id="myvideo" src="assets/57.webm" autoplay loop muted playsinline></video>
-</a-assets>
+      <a-assets>
+        <video id="myvideo" autoplay loop muted playsinline src="assets/57.webm"></video>
+      </a-assets>
 
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+</a-assets>
       <!-- 追蹤目標後呈現影片 -->
 <a-entity mindar-image-target="targetIndex: 0">
   <a-plane position="0 0 0" width="0.5625" height="1"
