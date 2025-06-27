@@ -8,15 +8,14 @@
     <a-scene mindar-image="imageTargetSrc: assets/targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
       <!-- 預載影片 -->
-      <a-assets>
-  <img id="gif" src="assets/57.gif" />
-      </a-assets>
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+<a-assets>
+  <video id="myvideo" src="assets/max2.webm" autoplay loop muted playsinline></video>
+</a-assets>
 
       <!-- 追蹤目標後呈現影片 -->
 <a-entity mindar-image-target="targetIndex: 0">
-  <a-plane position="0 0 0" width="1" height="0.5625"
-           material="shader: flat; src: #gif; transparent: true">
+  <a-plane position="0 0 0" width="0.5625" height="1"
+           material="shader: flat; src: #myvideo; transparent: true">
   </a-plane>
 </a-entity>
     </a-scene>
