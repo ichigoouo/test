@@ -3,25 +3,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <!-- 引入 chromakey shader（放在 <head> 或內嵌 script） -->
+<script>
+AFRAME.registerShader('chromakey', {
+  schema: {
+    src: {type: 'map'},
+    color: {type: 'color', default: '#00ff00'}
+  },
+  init: function (data) {
+    this.material = new THREE.ShaderMaterial({
+      uniforms: {
+        map: {value: new THREE.TextureLoader().load(data.src)},
+        keyColor: {value: new THREE.Color(data.color)}
+      },
+      vertexShader: `
+        varying vec2 vUV;
+        void main() {
+          vUV = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D map;
+        uniform vec3 keyColor;
+        varying vec2 vUV;
+        void main() {
+          vec4 color = texture2D(map, vUV);
+          float diff = distance(color.rgb, keyColor);
+          if (diff < 0.3) discard;
+          gl_FragColor = color;
+        }
+      `,
+      transparent: true
+    });
+  }
+});
+</script>
   </head>
   <body>
     <a-scene mindar-image="imageTargetSrc: assets/targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
-      <!-- 預載影片 -->
-<a-assets>
       <a-assets>
-        <video id="myvideo" autoplay loop muted playsinline src="assets/max.webm"></video>
-      </a-assets>
-
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+  <video id="myvideo" src="assets/11fo0-fo4v5.webm" autoplay loop muted playsinline crossorigin="anonymous"></video>
 </a-assets>
-      <!-- 追蹤目標後呈現影片 -->
+
 <a-entity mindar-image-target="targetIndex: 0">
-  <a-plane 
-    position="0 0 0" 
-    width="1" 
-    height="0.5625"
-    material="shader: flat; src: #myvideo; transparent: true">
+  <a-plane width="1" height="0.5625"
+           material="shader: chromakey; src: #myvideo; color: #00ff00"
+           position="0 0 0">
   </a-plane>
 </a-entity>
     </a-scene>
