@@ -1,15 +1,10 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>WebAR 綠幕去背</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- A-Frame & MindAR -->
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-    <!-- 自訂 chromakey shader：去除綠色背景 -->
+    <!-- 加入 chromakey shader 用於綠幕去背 -->
     <script>
       AFRAME.registerShader('chromakey', {
         schema: {
@@ -19,7 +14,7 @@
         init: function (data) {
           this.material = new THREE.ShaderMaterial({
             uniforms: {
-              map: {value: new THREE.TextureLoader().load(data.src)},
+              map: {value: new THREE.VideoTexture(document.querySelector(data.src))},
               keyColor: {value: new THREE.Color(data.color)}
             },
             vertexShader: `
@@ -46,30 +41,28 @@
       });
     </script>
   </head>
-
   <body>
-    <a-scene
-      mindar-image="imageTargetSrc: assets/target.mind;"
-      embedded
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-    >
+    <a-scene 
+      mindar-image="imageTargetSrc: assets/targets.mind;" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
+
+      <!-- 預載影片 -->
       <a-assets>
-        <!-- 影片資源 -->
-        <video id="greenscreen-video" src="assets/11fo0-fo4v5.webm" autoplay loop muted playsinline crossorigin="anonymous"></video>
+        <video id="myvideo" autoplay loop muted playsinline src="assets/11fo0-fo4v5.webm" crossorigin="anonymous"></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- AR 圖像對應目標區域 -->
+      <!-- 追蹤目標後呈現影片（使用 chromakey shader） -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane
-          position="0 0 0"
-          width="1"
+        <a-plane 
+          position="0 0 0" 
+          width="1" 
           height="0.5625"
-          material="shader: chromakey; src: #greenscreen-video; color: #00ff00">
+          material="shader: chromakey; src: #myvideo; color: #00ff00">
         </a-plane>
       </a-entity>
     </a-scene>
